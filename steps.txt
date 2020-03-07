@@ -1,0 +1,9 @@
+------------------REACT NATIVE FACEBOOK SDK------------------
+- Step 1: Install and Link Facebook Sdk
+npm i --save react-native-fbsdk
+react-native link react-native-fbsdk
+- Step 2: Create new Android App on Facebook Developer page, login by your facebook account
+- Step 3: Config facebook sdk in your app
+- Step 4: Login and logout facebook
++ Login and logout facebook: with LoginButton
++ Login and logout facebook: with custom LoginButton

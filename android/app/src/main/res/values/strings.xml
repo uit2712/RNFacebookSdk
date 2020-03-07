@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RNFacebookSdk</string>
+    <string name="facebook_app_id">597878197370385</string>
 </resources>

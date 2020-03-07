@@ -1,5 +1,6 @@
 # React Native Facebook SDK
-# RNVersion: 0.61.5
+# react-native@0.61.5
+# react-native-fbsdk@1.1.2
 
 <h1>Step 1: Install Facebook Sdk</h1>
 <pre>

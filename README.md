@@ -9,5 +9,6 @@ npm i --save react-native-fbsdk
 Facebook Developer: https://developers.facebook.com/<br/>
 Guide: https://github.com/uit2712/CreateFBAppForDeveloper
 <h2>Step 3: Login and logout facebook</h2>
-<h3>Login and logout facebook: with LoginButton</h3>
-<h3>Login and logout facebook: with custom LoginButton</h3>
+Login and logout facebook: with LoginButton<br/>
+Login and logout facebook: with custom LoginButton<br/>
+<h2>Step 4: Show public profile</h2>

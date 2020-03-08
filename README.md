@@ -2,6 +2,9 @@
 # react-native@0.61.5
 # react-native-fbsdk@1.1.2
 
+# DEMO
+<img src='https://github.com/uit2712/RNFacebookSdk/blob/master/demo/demo.gif' width='300'/>
+
 <h1>Step 1: Install Facebook Sdk</h1>
 <pre>
 npm i --save react-native-fbsdk

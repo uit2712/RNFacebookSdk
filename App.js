@@ -27,6 +27,16 @@ import {
     ShareDialog,
     SharePhotoContent,
 } from 'react-native-fbsdk';
+import {
+    fetchPagePosts,
+    fetchPagesInfo,
+    publishAPostToPage,
+    fetchPagePhotos,
+    fetchPhoto
+} from './assets/FacebookAssets';
+import PageInfo from './viewModels/PageInfo';
+import PagePost from './viewModels/PagePost';
+import Photo from './viewModels/Photo';
 
 function App() {
     return (
@@ -40,7 +50,7 @@ function LoginButton() {
     const [loggedIn, setLoggedIn] = useState(false);
 
     function login() {
-        LoginManager.logInWithPermissions(['public_profile', 'pages_show_list', ' manage_pages']).then((result) => {
+        LoginManager.logInWithPermissions(['public_profile', 'pages_show_list', 'manage_pages', 'publish_pages']).then((result) => {
             if (result.error) {
                 console.log('Error: ', result.error);
             } else {
@@ -161,9 +171,21 @@ function ShareDialogExample({
                     return;
                 const { accessToken, userID } = data;
                 console.log(data);
-                fetch(`https://graph.facebook.com/${userID}/accounts?access_token=${accessToken}`)
-                .then(response => response.json())
-                .then(json => console.log(json));
+                fetchPagesInfo(userID, accessToken)
+                .then((pagesInfo: PageInfo[]) => {
+                    console.log(pagesInfo);
+                    for (let pageInfo of pagesInfo) {
+                        // fetchPagePosts(pageInfo.id, pageInfo.access_token)
+                        // .then((pagePosts: PagePost[]) => console.log(pagePosts));
+                        fetchPagePhotos({
+                            pageId: pageInfo.id,
+                            pageAccessToken: pageInfo.access_token
+                        }).then((photos: Photo[]) => {
+                            if (photos.length > 0)
+                                fetchPhoto(photos[0].id);
+                        });
+                    }
+                })
             })
     }, []);
 

@@ -17,13 +17,6 @@ import {
     Image,
     Text,
 } from 'react-native';
-import { 
-    AccessToken,
-    LoginManager,
-    GraphRequest,
-    GraphRequestManager,
-    Permissions
-} from 'react-native-fbsdk';
 import { login, logout, getBasicInfo } from './assets/FacebookAssets';
 import ILoginFBResult from './interfaces/ILoginFBResult';
 import IError from './interfaces/IError';

@@ -24,6 +24,11 @@ import {
     GraphRequestManager,
     Permissions
 } from 'react-native-fbsdk';
+import { login, logout, getBasicInfo } from './assets/FacebookAssets';
+import ILoginFBResult from './interfaces/ILoginFBResult';
+import IError from './interfaces/IError';
+import ILogoutFBResult from './interfaces/ILogoutFBResult';
+import IBasicInfo from './interfaces/IBasicInfo';
 
 function App() {
     return (
@@ -36,25 +41,21 @@ function App() {
 function LoginButton() {
     const [loggedIn, setLoggedIn] = useState(false);
 
-    function login() {
-        LoginManager.logInWithPermissions(['public_profile']).then((result) => {
-            if (result.error) {
-                console.log('Error: ', result.error);
-            } else {
-                if (result.isCancelled) {
-                    console.log('Login is cancelled');
-                } else {
-                    setLoggedIn(true);
-                    console.log('Logged in: ', result);
-                }
-            }
-        })
+    function _login() {
+        login(['public_profile'])
+        .then((result: ILoginFBResult) => {
+            setLoggedIn(true);
+            console.log(result.message);
+        }).catch((error: IError) => {
+            console.log('Error: ', error.message);
+        });
     }
 
-    function logout() {
-        LoginManager.logOut();
-        setLoggedIn(false);
-        console.log('Logout');
+    function _logout() {
+        logout().then((result: ILogoutFBResult) => {
+            setLoggedIn(false);
+            console.log(result.message);
+        })
     }
 
     if (loggedIn)
@@ -63,7 +64,7 @@ function LoginButton() {
                 <FbBasicInfo loggedIn={loggedIn} />
                 <Button
                     title='Logout Facebook'
-                    onPress={logout}
+                    onPress={_logout}
                 />
             </>
         )
@@ -71,7 +72,7 @@ function LoginButton() {
     return (
         <Button
             title='Login with Facebook'
-            onPress={login}
+            onPress={_login}
         />
     )
 }
@@ -82,44 +83,21 @@ function FbBasicInfo({
     const [avatar, setAvatar] = useState(null);
     const [name, setName] = useState('');
 
-    function getBasicInfo() {
-        AccessToken.getCurrentAccessToken().then(data => {
-            const { accessToken } = data;
-            let graphRequest = new GraphRequest('/me', {
-                accessToken,
-                parameters: {
-                    fields: {
-                        string: 'picture.type(large),name',
-                    }
-                }
-            }, (error, result) => {
-                const {
-                    picture: {
-                        data
-                    },
-                    name,
-                } = result;
-                if (error) {
-                    console.log(error);
-                } else {
-                    console.log(result);
-                    setAvatar(data);
-                    setName(name);
-                }
-            });
-    
-            const graphRequestManager = new GraphRequestManager();
-            graphRequestManager.addRequest(graphRequest).start();
-        });
+    function _getBasicInfo() {
+        if (loggedIn !== true)
+            return;
+        
+        getBasicInfo().then((result: IBasicInfo) => {
+            setAvatar(result.avatar);
+            setName(result.name);
+        }).catch((error: IError) => {
+            console.log(error.message);
+        })
     }
 
     useEffect(() => {
-        getBasicInfo();
+        _getBasicInfo();
     }, [loggedIn]);
-
-    useEffect(() => {
-        console.log(avatar);
-    }, [avatar]);
 
     if (!loggedIn || !avatar)
         return null;

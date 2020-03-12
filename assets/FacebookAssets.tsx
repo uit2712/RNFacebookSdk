@@ -3,7 +3,7 @@ import { LoginManager, LoginResult, AccessToken, GraphRequest, GraphRequestManag
 import ILoginFBResult from '../interfaces/ILoginFBResult';
 import IError from '../interfaces/IError';
 import ILogoutFBResult from '../interfaces/ILogoutFBResult';
-import IBasicInfo from '../interfaces/IBasicInfo';
+import IBasicInfoResult from '../interfaces/IBasicInfoResult';
 
 export function login(permissions: Permission[]): Promise<ILoginFBResult> {
     return new Promise((
@@ -45,9 +45,9 @@ export function logout(): Promise<ILogoutFBResult> {
 
 const graphRequestManager = new GraphRequestManager();
 
-export function getBasicInfo(): Promise<IBasicInfo> {
+export function getBasicInfo(): Promise<IBasicInfoResult> {
     return new Promise((
-        resolve: (value?: IBasicInfo | PromiseLike<IBasicInfo>) => void,
+        resolve: (value?: IBasicInfoResult | PromiseLike<IBasicInfoResult>) => void,
         reject: (reason?: IError) => void
     ) => {
         AccessToken.getCurrentAccessToken().then(data => {

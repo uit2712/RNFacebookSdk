@@ -21,7 +21,7 @@ import { login, logout, getBasicInfo } from './assets/FacebookAssets';
 import ILoginFBResult from './interfaces/ILoginFBResult';
 import IError from './interfaces/IError';
 import ILogoutFBResult from './interfaces/ILogoutFBResult';
-import IBasicInfo from './interfaces/IBasicInfo';
+import IBasicInfoResult from './interfaces/IBasicInfoResult';
 
 function App() {
     return (
@@ -80,7 +80,7 @@ function FbBasicInfo({
         if (loggedIn !== true)
             return;
         
-        getBasicInfo().then((result: IBasicInfo) => {
+        getBasicInfo().then((result: IBasicInfoResult) => {
             setAvatar(result.avatar);
             setName(result.name);
         }).catch((error: IError) => {

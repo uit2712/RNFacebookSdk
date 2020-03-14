@@ -43,8 +43,6 @@ export function logout(): Promise<ILogoutFBResult> {
     })
 }
 
-const graphRequestManager = new GraphRequestManager();
-
 export function getBasicInfo(): Promise<IBasicInfoResult> {
     return new Promise((
         resolve: (value?: IBasicInfoResult | PromiseLike<IBasicInfoResult>) => void,
@@ -83,6 +81,7 @@ export function getBasicInfo(): Promise<IBasicInfoResult> {
                 }
             });
     
+            let graphRequestManager = new GraphRequestManager();
             graphRequestManager.addRequest(graphRequest).start();
         });
     })

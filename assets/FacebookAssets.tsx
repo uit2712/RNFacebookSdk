@@ -22,11 +22,15 @@ export function login(permissions: Permission[]): Promise<ILoginFBResult> {
                         message: 'Login is cancelled'
                     })
                 } else {
-                    return resolve({
+                    resolve({
                         message: 'Login success'
                     })
                 }
             }
+        }).catch((error: Error) => {
+            reject({
+                message: error.message
+            })
         });
     })
 }
@@ -86,6 +90,10 @@ export function getBasicInfo(): Promise<IBasicInfoResult> {
     
             let graphRequestManager = new GraphRequestManager();
             graphRequestManager.addRequest(graphRequest).start();
+        }).catch((error: Error) => {
+            reject({
+                message: error.message
+            })
         });
     })
 }

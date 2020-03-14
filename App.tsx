@@ -72,14 +72,13 @@ function LoginButton() {
 
 function FbBasicInfo({
     loggedIn
+}: {
+    loggedIn: boolean
 }) {
     const [avatar, setAvatar] = useState(null);
     const [name, setName] = useState('');
 
     function _getBasicInfo() {
-        if (loggedIn !== true)
-            return;
-        
         getBasicInfo().then((result: IBasicInfoResult) => {
             setAvatar(result.avatar);
             setName(result.name);
@@ -89,7 +88,7 @@ function FbBasicInfo({
     }
 
     useEffect(() => {
-        if (loggedIn === true)
+        if (loggedIn)
             _getBasicInfo();
         else {
             setAvatar(null);

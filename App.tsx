@@ -88,8 +88,9 @@ function FbBasicInfo({
     }
 
     useEffect(() => {
-        if (loggedIn)
+        if (loggedIn) {
             _getBasicInfo();
+        }
         else {
             setAvatar(null);
             setName('');

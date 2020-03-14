@@ -1,9 +1,11 @@
 import { Permission } from '../types/Permission';
-import { LoginManager, LoginResult, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
+import { LoginManager, LoginResult, AccessToken, GraphRequest, GraphRequestManager, ShareLinkContent, ShareDialog, SharePhotoContent, ShareVideoContent } from 'react-native-fbsdk';
 import ILoginFBResult from '../interfaces/ILoginFBResult';
 import IError from '../interfaces/IError';
 import ILogoutFBResult from '../interfaces/ILogoutFBResult';
 import IBasicInfoResult from '../interfaces/IBasicInfoResult';
+import IShareLinkResult from '../interfaces/IShareLinkResult';
+import ISharePhotoResult from '../interfaces/ISharePhotoResult';
 
 export function login(permissions: Permission[]): Promise<ILoginFBResult> {
     return new Promise((
@@ -95,5 +97,59 @@ export function getBasicInfo(): Promise<IBasicInfoResult> {
                 message: error.message
             })
         });
+    })
+}
+
+export function shareLink(shareLinkContent: ShareLinkContent): Promise<IShareLinkResult> {
+    return new Promise((
+        resolve: (value?: IShareLinkResult | PromiseLike<IShareLinkResult>) => void,
+        reject: (value?: IError) => void 
+    ) => {
+        ShareDialog.canShow(shareLinkContent)
+        .then((canShow: boolean) => {
+            if (canShow)
+                return ShareDialog.show(shareLinkContent);
+        }).then((result: any) => {
+            if (result.isCancelled) {
+                reject({
+                    message: 'Share link is cancelled'
+                })
+            } else {
+                resolve({
+                    message: 'Share link success'
+                })
+            }
+        }).catch((error: Error) => {
+            reject({
+                message: `Share link error: ${error.message}`
+            })
+        })
+    })
+}
+
+export function sharePhotos(sharePhotoContent: SharePhotoContent): Promise<ISharePhotoResult> {
+    return new Promise((
+        resolve: (value?: ISharePhotoResult | PromiseLike<ISharePhotoResult>) => void,
+        reject: (value?: IError) => void 
+    ) => {
+        ShareDialog.canShow(sharePhotoContent)
+        .then((canShow: boolean) => {
+            if (canShow)
+                return ShareDialog.show(sharePhotoContent);
+        }).then((result: any) => {
+            if (result.isCancelled) {
+                reject({
+                    message: 'Share photo is cancelled'
+                })
+            } else {
+                resolve({
+                    message: 'Share photo success'
+                })
+            }
+        }).catch((error: Error) => {
+            reject({
+                message: `Share photo error: ${error.message}`
+            })
+        })
     })
 }

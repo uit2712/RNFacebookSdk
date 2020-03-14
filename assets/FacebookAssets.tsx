@@ -31,11 +31,14 @@ export function login(permissions: Permission[]): Promise<ILoginFBResult> {
     })
 }
 
-export function logout(): Promise<ILogoutFBResult> {
-    return new Promise((
+export function logout(isRefreshAccessToken = false): Promise<ILogoutFBResult> {
+    return new Promise(async (
         resolve: (value?: ILogoutFBResult | PromiseLike<ILogoutFBResult>) => void,
         reject: (reason?: IError) => void
     ) => {
+        if (isRefreshAccessToken) {
+            await AccessToken.refreshCurrentAccessTokenAsync();
+        }
         LoginManager.logOut();
         resolve({
             message: 'Logout success'

@@ -24,6 +24,13 @@ import {
     GraphRequestManager,
     Permissions
 } from 'react-native-fbsdk';
+import { login, logout, getBasicInfo, shareLink, sharePhoto } from './assets/FacebookAssets';
+import ILoginFBResult from './interfaces/ILoginFBResult';
+import IError from './interfaces/IError';
+import ILogoutFBResult from './interfaces/ILogoutFBResult';
+import IBasicInfoResult from './interfaces/IBasicInfoResult';
+import IShareLinkResult from './interfaces/IShareLinkResult';
+import ISharePhotoResult from './interfaces/ISharePhotoResult';
 
 function App() {
     return (
@@ -36,25 +43,24 @@ function App() {
 function LoginButton() {
     const [loggedIn, setLoggedIn] = useState(false);
 
-    function login() {
-        LoginManager.logInWithPermissions(['public_profile']).then((result) => {
-            if (result.error) {
-                console.log('Error: ', result.error);
-            } else {
-                if (result.isCancelled) {
-                    console.log('Login is cancelled');
-                } else {
-                    setLoggedIn(true);
-                    console.log('Logged in: ', result);
-                }
-            }
+    function _login() {
+        login(['public_profile'])
+        .then((result: ILoginFBResult) => {
+            console.log(result.message);
+            setLoggedIn(true);
+        }).catch((error: IError) => {
+            console.log(error.message);
         })
     }
 
-    function logout() {
-        LoginManager.logOut();
-        setLoggedIn(false);
-        console.log('Logout');
+    function _logout() {
+        logout()
+        .then((result: ILogoutFBResult) => {
+            console.log(result.message);
+            setLoggedIn(false);
+        }).catch((error: IError) => {
+            console.log(error.message);
+        })
     }
 
     if (loggedIn)
@@ -63,7 +69,7 @@ function LoginButton() {
                 <FbBasicInfo loggedIn={loggedIn} />
                 <Button
                     title='Logout Facebook'
-                    onPress={logout}
+                    onPress={_logout}
                 />
             </>
         )
@@ -71,55 +77,34 @@ function LoginButton() {
     return (
         <Button
             title='Login with Facebook'
-            onPress={login}
+            onPress={_login}
         />
     )
 }
 
 function FbBasicInfo({
     loggedIn
+}: {
+    loggedIn: boolean
 }) {
     const [avatar, setAvatar] = useState(null);
     const [name, setName] = useState('');
 
-    function getBasicInfo() {
-        AccessToken.getCurrentAccessToken().then(data => {
-            const { accessToken } = data;
-            let graphRequest = new GraphRequest('/me', {
-                accessToken,
-                parameters: {
-                    fields: {
-                        string: 'picture.type(large),name',
-                    }
-                }
-            }, (error, result) => {
-                const {
-                    picture: {
-                        data
-                    },
-                    name,
-                } = result;
-                if (error) {
-                    console.log(error);
-                } else {
-                    console.log(result);
-                    setAvatar(data);
-                    setName(name);
-                }
-            });
-    
-            const graphRequestManager = new GraphRequestManager();
-            graphRequestManager.addRequest(graphRequest).start();
-        });
+    function _getBasicInfo() {
+        getBasicInfo()
+        .then((result: IBasicInfoResult) => {
+            setAvatar(result.avatar);
+            setName(result.name);
+        }).catch((error: IError) => {
+            console.log(error.message);
+        })
     }
 
     useEffect(() => {
-        getBasicInfo();
+        if (loggedIn) {
+            _getBasicInfo();
+        }
     }, [loggedIn]);
-
-    useEffect(() => {
-        console.log(avatar);
-    }, [avatar]);
 
     if (!loggedIn || !avatar)
         return null;

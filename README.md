@@ -5,9 +5,9 @@
 # DEMO
 <img src='https://github.com/uit2712/RNFacebookSdk/blob/master/demo/demo.gif' width='300'/>
 <h1>YOUTUBE</h1>
-<h2>Login, logout and get basic info: https://youtu.be/FK3Rv7J1fSA</h2>
-<h2>Login, logout and get basic info with Typescript and Promise: https://youtu.be/OAagSSZnctk</h2>
-<h2>Share links and photos with Typescript and Promise: https://youtu.be/Hv3cfIZOmjU</h2>
+<h2><a href='https://youtu.be/FK3Rv7J1fSA'>Login, logout and get basic info</a></h2>
+<h2><a href='https://youtu.be/OAagSSZnctk'>Login, logout and get basic info with Typescript and Promise</a></h2>
+<h2><a href='https://youtu.be/Hv3cfIZOmjU'>Share links and photos with Typescript and Promise</a></h2>
 
 <h2>Step 1: Install Facebook Sdk</h2>
 <pre>
